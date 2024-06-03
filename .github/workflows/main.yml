@@ -1,0 +1,28 @@
+name: Compilation test
+
+on:
+  push:
+
+jobs:
+  run-jpf:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        java: [ '11' ]
+    name: Java ${{ matrix.java }} Run JPF
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        ref: 87a142f9604c1a5365b4d24d22c2c11c26a9d5ab
+
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+
+    - name: Compile Java sources
+      run: |
+        mvn clean install -DskipTests
